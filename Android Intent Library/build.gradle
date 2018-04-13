@@ -1,8 +1,9 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
-apply plugin: 'com.jfrog.bintray'
-
-version = "1.0.0"
+//apply plugin: 'com.jfrog.bintray'
+group='com.github.jitpack'
+//
+//version = "1.0.0"
 
 android {
     compileSdkVersion 27
@@ -25,9 +26,9 @@ android {
     }
 
 }
-//
-//def siteUrl = 'https://github.com/izacus/FuzzyDateFormatter'      // Homepage URL of the library
-//def gitUrl = 'https://github.com/izacus/FuzzyDateFormatter.git'   // Git repository URL
+
+//def siteUrl = 'https://github.com/kingdom2011/Android-Intents'      // Homepage URL of the library
+//def gitUrl = 'https://github.com/kingdom2011/Android-Intents.git'   // Git repository URL
 //group = "<maven group id>"                                        // Maven Group ID for the artifact
 //
 //Properties properties = new Properties()
@@ -40,7 +41,7 @@ android {
 //    configurations = ['archives']
 //    pkg {
 //        repo = "maven"
-//        name = "Your library name"
+//        name = "AndroidIntents"
 //        websiteUrl = siteUrl
 //        vcsUrl = gitUrl
 //        licenses = ["Apache-2.0"]
@@ -56,7 +57,7 @@ android {
 //                packaging 'aar'
 //
 //                // Add your description here
-//                name 'Android Intent Library'
+//                name 'AndroidIntents'
 //                url siteUrl
 //
 //                // Set your license
@@ -68,7 +69,7 @@ android {
 //                }
 //                developers {
 //                    developer {
-//                        id '<your user ID>'
+//                        id 'ma3udmohammadi'
 //                        name 'masoud mohammadi'
 //                        email 'ma3udmohammadi@gmail.com'
 //                    }
@@ -83,12 +84,12 @@ android {
 //        }
 //    }
 //}
-
+//
 //task sourcesJar(type: Jar) {
 //    from android.sourceSets.main.java.srcDirs
 //    classifier = 'sources'
 //}
-//
+
 //task javadoc(type: Javadoc) {
 //    source = android.sourceSets.main.java.srcDirs
 //    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
@@ -100,9 +101,33 @@ android {
 //    options.encoding = 'UTF-8'
 //}
 //artifacts {
-//    archives javadocJar
+//    //archives javadocJar
 //    archives sourcesJar
 //}
+
+// build a jar with source files
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+task javadoc(type: Javadoc) {
+    failOnError  false
+    source = android.sourceSets.main.java.sourceFiles
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    classpath += configurations.compile
+}
+
+// build a jar with javadoc
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
